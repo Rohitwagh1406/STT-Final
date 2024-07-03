@@ -1,5 +1,4 @@
 deepgram_sdk
-deepgram
 Flask==3.0.3
 Flask-CORS
 Flask_SocketIO==5.3.6
