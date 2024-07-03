@@ -1,5 +1,9 @@
 services:
-  - name: app
+  - type: web
+    name: app
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
+    buildCommand: |
+      apt-get update
+      apt-get install -y portaudio19-dev
+      pip install -r requirements.txt
+    startCommand: gunicorn app4:app
