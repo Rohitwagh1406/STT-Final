@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time SST</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #transcription {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            height: 200px;
+            overflow-y: auto;
+        }
+        #controls {
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Speech-to-Text</h1>
+    <div id="transcription">Waiting for transcription...</div>
+    <div id="controls">
+        <button onclick="toggleTranscription('start')">Start Transcription</button>
+        <button onclick="toggleTranscription('stop')">Stop Transcription</button>
+    </div>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('connect', function() {
+            console.log('Connected to server');
+        });
+
+        socket.on('transcription_update', function(data) {
+            var transcriptionDiv = document.getElementById('transcription');
+            transcriptionDiv.innerHTML += '<p>' + data.transcription + '</p>';
+            transcriptionDiv.scrollTop = transcriptionDiv.scrollHeight;
+        });
+
+        function toggleTranscription(action) {
+            socket.emit('toggle_transcription', { action: action });
+        }
+    </script>
+</body>
+</html>
