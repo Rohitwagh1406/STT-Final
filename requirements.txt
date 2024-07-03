@@ -4,3 +4,4 @@ Flask_SocketIO==5.3.6
 python-dotenv==1.0.1
 logging
 Microphone
+gunicorn
